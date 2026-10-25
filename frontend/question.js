@@ -40,6 +40,7 @@ form.addEventListener("submit", async (event) => {
 
     input.value = "";
     showStatus("Your question has been submitted successfully.");
+    form.dispatchEvent(new Event("question-submitted"));
   } catch {
     showStatus("Cannot reach the server. Check your connection and try again.");
   } finally {

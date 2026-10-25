@@ -41,10 +41,42 @@ cd backend
 ```
 
 ```sh
-node --test frontend/question.test.cjs
+node --test frontend/question.test.cjs frontend/question-list.test.cjs
 ```
 
 Die Backend-Tests prüfen echte HTTP-Anfragen, Speicherung in H2, ungültige
 Eingaben, die 500-Zeichen-Grenze und die Auslieferung des Frontends samt Assets.
 Die JavaScript-Tests benötigen Node.js mit integriertem Test-Runner und prüfen
 Validierung, POST-Daten, Bestätigung, Fehlerbehandlung und doppelte Anfragen.
+
+## US04 – Fragen anzeigen
+
+Unter `http://localhost:8080/question.html` erscheint unter dem Eingabeformular
+die Fragenliste. `GET /api/questions` liefert alle gespeicherten Fragen als
+JSON-Array, in Einreichungsreihenfolge (ID aufsteigend). Die Liste lädt beim
+Öffnen der Seite, über **Refresh** und automatisch nach erfolgreichem Einreichen
+einer Frage. Bei einer leeren Liste erscheint ein Hinweis. Schlägt das Laden
+fehl, erscheint eine Fehlermeldung; bereits angezeigte Fragen bleiben erhalten.
+
+**Offenes Akzeptanzkriterium:** Die Liste ist vorläufig global. Die Zuordnung und
+Filterung nach Veranstaltung wird nach Absprache erst bei der Integration mit
+US01/US02 ergänzt. Im aktuellen Datenmodell existiert noch keine Veranstaltung.
+US04 erfüllt daher das Kriterium „Fragen gehören zur richtigen Veranstaltung“
+noch nicht.
+
+Manuell testen:
+
+1. Das Backend starten und die Seite öffnen. Ohne gespeicherte Fragen erscheint
+   „No questions yet. Be the first to ask!“.
+2. Eine Frage absenden. Sie erscheint automatisch in der Liste, zusätzlich zur
+   Bestätigung von US03.
+3. Dieselbe Seite in einem zweiten Tab öffnen und dort eine weitere Frage
+   absenden. Im ersten Tab **Refresh** drücken: Beide Fragen erscheinen, ohne
+   Duplikate. Alternativ die Seite neu laden.
+4. Das Backend stoppen und **Refresh** drücken. Die Fehlermeldung erscheint,
+   bisher angezeigte Fragen bleiben sichtbar.
+
+Die zusätzlichen Tests prüfen die leere Liste, gespeicherte Fragen und die
+Abfolge POST → GET über HTTP mit H2 sowie Laden, Aktualisieren, Fehlerbehandlung
+und die sichere Textdarstellung im Frontend. Es gibt kein automatisches Polling;
+Fragen anderer Teilnehmer erscheinen nach **Refresh** oder einem Neuladen.

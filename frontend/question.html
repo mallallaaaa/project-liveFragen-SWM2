@@ -50,12 +50,18 @@
         color: #0d6efd;
       }
 
+      #question-list li {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
       .navbar-brand:hover,
       .navbar-brand:focus {
         color: #0a58ca;
       }
     </style>
     <script src="question.js" defer></script>
+    <script src="question-list.js" defer></script>
   </head>
   <body class="min-vh-100 d-flex flex-column">
     <header class="position-absolute top-0 start-0 w-100">
@@ -70,7 +76,7 @@
       </nav>
     </header>
 
-    <main class="min-vh-100 d-flex align-items-center justify-content-center p-3">
+    <main class="min-vh-100 d-flex align-items-center justify-content-center" style="padding: 6rem 1rem 3rem;">
       <section class="w-100" style="max-width: 760px;">
         <form id="question-form" novalidate>
           <label class="visually-hidden" for="question-input">Your question</label>
@@ -90,6 +96,14 @@
           </div>
           <p id="question-status" class="text-center text-white mt-3" role="status" aria-live="polite" hidden></p>
         </form>
+        <section class="glass-box p-4 mt-4 text-white" aria-labelledby="questions-heading">
+          <div class="d-flex align-items-center justify-content-between gap-3">
+            <h2 id="questions-heading" class="h4 mb-0">Questions</h2>
+            <button id="questions-refresh" class="btn glass-box text-white px-3" type="button">Refresh</button>
+          </div>
+          <p id="questions-status" class="mt-3 mb-0" role="status" aria-live="polite"></p>
+          <ul id="question-list" class="list-unstyled mb-0" aria-label="Submitted questions"></ul>
+        </section>
       </section>
     </main>
   </body>

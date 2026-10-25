@@ -6,8 +6,12 @@ const script = readFileSync(`${__dirname}/question.js`, "utf8");
 
 function setup(value, fetch) {
   let onSubmit;
+  const events = [];
   const elements = {
-    "question-form": { addEventListener: (_, handler) => { onSubmit = handler; } },
+    "question-form": {
+      addEventListener: (_, handler) => { onSubmit = handler; },
+      dispatchEvent(event) { events.push(event.type); },
+    },
     "question-input": {
       value, disabled: false, focus() {},
       setAttribute() {}, removeAttribute() {},
@@ -16,11 +20,12 @@ function setup(value, fetch) {
     "question-status": { textContent: "", hidden: true },
   };
   vm.runInNewContext(script, {
-    document: { getElementById: (id) => elements[id] }, fetch,
+    document: { getElementById: (id) => elements[id] }, fetch, Event,
   });
   return {
     input: elements["question-input"], button: elements["question-submit"],
     status: elements["question-status"],
+    events,
     submit: () => onSubmit({ preventDefault() {} }),
   };
 }
@@ -48,6 +53,7 @@ test("posts trimmed JSON, confirms success and clears the field", async () => {
   assert.equal(ui.input.value, "");
   assert.equal(ui.button.disabled, false);
   assert.equal(ui.input.disabled, false);
+  assert.deepEqual(ui.events, ["question-submitted"]);
 });
 
 for (const [name, fetch, message] of [
@@ -62,6 +68,7 @@ for (const [name, fetch, message] of [
     assert.equal(ui.input.value, "My question?");
     assert.equal(ui.button.disabled, false);
     assert.equal(ui.input.disabled, false);
+    assert.deepEqual(ui.events, []);
   });
 }
 

@@ -2,7 +2,9 @@
 package com.occor.backend;
 
 import java.time.Instant;
+import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,14 @@ public class QuestionController {
 
     public QuestionController(QuestionRepository repository) {
         this.repository = repository;
+    }
+
+    @GetMapping
+    public List<QuestionResponse> list() {
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
+                .map(question -> new QuestionResponse(
+                        question.getId(), question.getText(), question.getSubmittedAt()))
+                .toList();
     }
 
     @PostMapping

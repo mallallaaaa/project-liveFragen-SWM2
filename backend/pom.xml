@@ -80,6 +80,7 @@
 				<includes>
 					<include>question.html</include>
 					<include>question.js</include>
+					<include>question-list.js</include>
 					<include>blue1.png</include>
 				</includes>
 			</resource>
