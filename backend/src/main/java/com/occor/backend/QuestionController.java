@@ -56,6 +56,14 @@ public class QuestionController {
 
     public record CreateQuestionRequest(String text) {}
 
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<QuestionError> handleInvalidQuestion(ResponseStatusException exception) {
+        return ResponseEntity.status(exception.getStatusCode())
+                .body(new QuestionError(exception.getReason()));
+    }
+
+    public record QuestionError(String message) {}
+
     public record QuestionResponse(
             Long id,
             String text,

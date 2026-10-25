@@ -55,6 +55,7 @@
         color: #0a58ca;
       }
     </style>
+    <script src="question.js" defer></script>
   </head>
   <body class="min-vh-100 d-flex flex-column">
     <header class="position-absolute top-0 start-0 w-100">
@@ -71,7 +72,7 @@
 
     <main class="min-vh-100 d-flex align-items-center justify-content-center p-3">
       <section class="w-100" style="max-width: 760px;">
-        <form action="#" method="get">
+        <form id="question-form" novalidate>
           <label class="visually-hidden" for="question-input">Your question</label>
           <input
             class="form-control form-control-lg glass-box px-4 text-center"
@@ -81,11 +82,13 @@
             placeholder="Ask anything"
             maxlength="500"
             required
+            aria-describedby="question-status"
             style="height: 4.5rem;"
           />
           <div class="text-center mt-3">
-            <button class="btn glass-box text-white px-4" type="submit">Submit</button>
+            <button id="question-submit" class="btn glass-box text-white px-4" type="submit">Submit</button>
           </div>
+          <p id="question-status" class="text-center text-white mt-3" role="status" aria-live="polite" hidden></p>
         </form>
       </section>
     </main>
