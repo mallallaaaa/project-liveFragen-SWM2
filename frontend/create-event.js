@@ -2,6 +2,8 @@ const eventForm = document.getElementById("event-form");
 const eventTitle = document.getElementById("event-title");
 const createButton = document.getElementById("event-submit");
 const eventStatus = document.getElementById("event-status");
+const participantLinkBox = document.getElementById("participant-link-box");
+const participantLink = document.getElementById("participant-link");
 
 function showEventStatus(message) {
   eventStatus.textContent = message;
@@ -43,6 +45,10 @@ eventForm.addEventListener("submit", async (event) => {
     }
     eventTitle.value = "";
     showEventStatus(`Event “${created.title}” created successfully. Event ID: ${created.id}.`);
+    const link = new URL(`/event.html?eventId=${created.id}`, window.location.origin);
+    participantLink.href = link.href;
+    participantLink.textContent = link.href;
+    participantLinkBox.hidden = false;
   } catch {
     showEventStatus("The server response could not be confirmed. Check your connection before trying again.");
   } finally {
