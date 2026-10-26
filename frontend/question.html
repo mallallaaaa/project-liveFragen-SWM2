@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>occor</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        background: url("blue1.png") center / cover no-repeat fixed;
+      }
+
+      .glass-box {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 32px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      #question-input {
+        color: #f8fbff;
+        caret-color: #ffffff;
+      }
+
+      #question-input:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.12), 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      #question-input::placeholder {
+        color: #596579;
+        font-size: 1.25rem;
+        font-weight: 500;
+        opacity: 1;
+      }
+
+      #question-input:focus::placeholder {
+        color: transparent;
+      }
+
+      .navbar-brand {
+        color: #0d6efd;
+      }
+
+      .navbar-brand:hover,
+      .navbar-brand:focus {
+        color: #0a58ca;
+      }
+    </style>
+    <script src="question.js" defer></script>
+  </head>
+  <body class="min-vh-100 d-flex flex-column">
+    <header class="position-absolute top-0 start-0 w-100">
+      <nav class="navbar navbar-expand border-bottom" style="background-color: #eef6ff;">
+        <div class="container">
+          <a class="navbar-brand fw-bold" href="#">OCCOR</a>
+          <div class="ms-auto d-flex align-items-center gap-3">
+            <a class="link-primary text-decoration-none" href="#sign-in">Sign in</a>
+            <a class="btn btn-primary rounded-pill px-3" href="#sign-up">Sign up</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="min-vh-100 d-flex align-items-center justify-content-center p-3">
+      <section class="w-100" style="max-width: 760px;">
+        <form id="question-form" novalidate>
+          <label class="visually-hidden" for="question-input">Your question</label>
+          <input
+            class="form-control form-control-lg glass-box px-4 text-center"
+            id="question-input"
+            name="question"
+            type="text"
+            placeholder="Ask anything"
+            maxlength="500"
+            required
+            aria-describedby="question-status"
+            style="height: 4.5rem;"
+          />
+          <div class="text-center mt-3">
+            <button id="question-submit" class="btn glass-box text-white px-4" type="submit">Submit</button>
+          </div>
+          <p id="question-status" class="text-center text-white mt-3" role="status" aria-live="polite" hidden></p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

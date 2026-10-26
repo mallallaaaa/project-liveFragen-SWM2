@@ -82,6 +82,8 @@
 					<include>create-event.js</include>
 					<include>event.html</include>
 					<include>event.js</include>
+					<include>question.html</include>
+					<include>question.js</include>
 					<include>blue1.png</include>
 				</includes>
 			</resource>
