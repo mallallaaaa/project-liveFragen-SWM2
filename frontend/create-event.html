@@ -11,43 +11,68 @@
       crossorigin="anonymous"
     />
     <style>
-      body { background: url("blue1.png") center / cover no-repeat fixed; }
+      body {
+        background-color: aqua;
+        color: #083b40;
+      }
       .glass-box {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(8, 59, 64, 0.25);
         border-radius: 32px;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 24px rgba(8, 59, 64, 0.1);
       }
-      #event-title { color: #f8fbff; caret-color: #ffffff; }
+      #event-title { color: #083b40; caret-color: #083b40; }
       #event-title:focus {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.4);
-        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.12);
+        background: #ffffff;
+        border-color: #07505a;
+        box-shadow: 0 0 0 0.2rem rgba(7, 80, 90, 0.25);
       }
-      #event-title::placeholder { color: #596579; opacity: 1; }
+      #event-title::placeholder { color: #466267; opacity: 1; }
       #event-title:focus::placeholder { color: transparent; }
-      .navbar-brand { color: #0d6efd; }
-      .navbar-brand:hover, .navbar-brand:focus { color: #0a58ca; }
+      .form-label { font-weight: 600; }
+      #event-title-help { color: #20535a; }
+      .navbar-brand, .event-link { color: #07505a; }
+      .navbar-brand:hover, .navbar-brand:focus,
+      .event-link:hover, .event-link:focus { color: #03343b; }
+      .btn-event {
+        background: #07505a;
+        border-color: #07505a;
+        color: #ffffff;
+      }
+      .btn-event:hover, .btn-event:focus-visible, .btn-event:active {
+        background: #03343b;
+        border-color: #03343b;
+        color: #ffffff;
+      }
+      .btn-event:focus-visible {
+        box-shadow: 0 0 0 0.2rem rgba(7, 80, 90, 0.3);
+      }
+      .btn-event:disabled {
+        background: #07505a;
+        border-color: #07505a;
+        color: #ffffff;
+        opacity: 0.65;
+      }
       #event-status { overflow-wrap: anywhere; white-space: pre-wrap; }
     </style>
     <script src="create-event.js" defer></script>
   </head>
   <body class="min-vh-100 d-flex flex-column">
     <header class="position-absolute top-0 start-0 w-100">
-      <nav class="navbar navbar-expand border-bottom" style="background-color: #eef6ff;">
+      <nav class="navbar navbar-expand border-bottom" style="background-color: #e6ffff;">
         <div class="container">
           <a class="navbar-brand fw-bold" href="create-event.html">OCCOR</a>
           <div class="ms-auto d-flex align-items-center gap-3">
-            <a class="link-primary text-decoration-none" href="#sign-in">Sign in</a>
-            <a class="btn btn-primary rounded-pill px-3" href="#sign-up">Sign up</a>
+            <a class="event-link text-decoration-none" href="#sign-in">Sign in</a>
+            <a class="btn btn-event rounded-pill px-3" href="#sign-up">Sign up</a>
           </div>
         </div>
       </nav>
     </header>
     <main class="min-vh-100 d-flex align-items-center justify-content-center" style="padding: 6rem 1rem 3rem;">
-      <section class="w-100 text-white" style="max-width: 760px;" aria-labelledby="create-event-heading">
+      <section class="w-100" style="max-width: 760px;" aria-labelledby="create-event-heading">
         <h1 id="create-event-heading" class="h2 text-center mb-4">Create an event</h1>
         <form id="event-form" novalidate>
           <label for="event-title" class="form-label px-3">Event title</label>
@@ -57,10 +82,14 @@
             aria-describedby="event-title-help event-status" style="height: 4.5rem;" />
           <p id="event-title-help" class="mt-2 px-3">Choose a title of up to 200 characters.</p>
           <div class="text-center mt-3">
-            <button id="event-submit" class="btn glass-box text-white px-4" type="submit">Create event</button>
+            <button id="event-submit" class="btn btn-event rounded-pill px-4 py-2" type="submit">Create event</button>
           </div>
           <p id="event-status" class="glass-box p-3 mt-4 text-center" role="status" aria-live="polite" hidden></p>
         </form>
+        <div id="participant-link-box" class="glass-box p-3 mt-3 text-center" hidden>
+          <p class="mb-2">Share this link with your participants. No registration required.</p>
+          <a id="participant-link" class="event-link" style="overflow-wrap: anywhere;"></a>
+        </div>
       </section>
     </main>
   </body>

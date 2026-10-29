@@ -13,12 +13,18 @@ function setup(value, fetch) {
   };
   const button = { disabled: false };
   const status = { textContent: "", hidden: true };
+  const link = {};
+  const linkBox = { hidden: true };
   const elements = {
     "event-form": { addEventListener: (_, handler) => { onSubmit = handler; } },
     "event-title": input, "event-submit": button, "event-status": status,
+    "participant-link": link, "participant-link-box": linkBox,
   };
-  vm.runInNewContext(source, { document: { getElementById: (id) => elements[id] }, fetch });
-  return { input, button, status, submit: () => onSubmit({ preventDefault() {} }) };
+  vm.runInNewContext(source, {
+    document: { getElementById: (id) => elements[id] }, fetch, URL,
+    window: { location: { origin: "http://localhost:8080" } },
+  });
+  return { input, button, status, link, linkBox, submit: () => onSubmit({ preventDefault() {} }) };
 }
 
 for (const value of ["", " \t\n ", "\u2003", "a".repeat(201)]) {
@@ -47,6 +53,9 @@ test("posts trimmed JSON and confirms event title and ID as plain text", async (
   assert.equal(ui.input.value, "");
   assert.equal(ui.button.disabled, false);
   assert.equal(ui.input.disabled, false);
+  assert.equal(ui.link.href, "http://localhost:8080/event.html?eventId=42");
+  assert.equal(ui.link.textContent, ui.link.href);
+  assert.equal(ui.linkBox.hidden, false);
 });
 
 test("accepts a title at the 200-character boundary", async () => {
@@ -71,6 +80,7 @@ for (const [name, fetch, message] of [
     assert.equal(ui.input.value, "My lecture");
     assert.equal(ui.button.disabled, false);
     assert.equal(ui.input.disabled, false);
+    assert.equal(ui.linkBox.hidden, true);
   });
 }
 
