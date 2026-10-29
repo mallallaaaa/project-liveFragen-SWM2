@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>occor</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        background: linear-gradient(135deg, #123f63, #176e86) fixed;
+      }
+
+      .glass-box {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 32px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      #question-input {
+        color: #f8fbff;
+        caret-color: #ffffff;
+      }
+
+      #question-input:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.12), 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      #question-input::placeholder {
+        color: #596579;
+        font-size: 1.25rem;
+        font-weight: 500;
+        opacity: 1;
+      }
+
+      #question-input:focus::placeholder {
+        color: transparent;
+      }
+
+      .navbar-brand {
+        color: #0d6efd;
+      }
+
+      #question-list li {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
+      .navbar-brand:hover,
+      .navbar-brand:focus {
+        color: #0a58ca;
+      }
+    </style>
+    <script src="question.js" defer></script>
+    <script src="question-list.js" defer></script>
+  </head>
+  <body class="min-vh-100 d-flex flex-column">
+    <header class="position-absolute top-0 start-0 w-100">
+      <nav class="navbar navbar-expand border-bottom" style="background-color: #eef6ff;">
+        <div class="container">
+          <a class="navbar-brand fw-bold" href="#">OCCOR</a>
+          <div class="ms-auto d-flex align-items-center gap-3">
+            <a class="link-primary text-decoration-none" href="#sign-in">Sign in</a>
+            <a class="btn btn-primary rounded-pill px-3" href="#sign-up">Sign up</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="min-vh-100 d-flex align-items-center justify-content-center" style="padding: 6rem 1rem 3rem;">
+      <section class="w-100" style="max-width: 760px;">
+        <h1 id="question-event-heading" class="h3 text-center text-white mb-4">Event questions</h1>
+        <form id="question-form" novalidate>
+          <label class="visually-hidden" for="question-input">Your question</label>
+          <input
+            class="form-control form-control-lg glass-box px-4 text-center"
+            id="question-input"
+            name="question"
+            type="text"
+            placeholder="Ask anything"
+            maxlength="500"
+            required
+            aria-describedby="question-status"
+            style="height: 4.5rem;"
+          />
+          <div class="text-center mt-3">
+            <button id="question-submit" class="btn glass-box text-white px-4" type="submit">Submit</button>
+          </div>
+          <p id="question-status" class="text-center text-white mt-3" role="status" aria-live="polite" hidden></p>
+        </form>
+        <section class="glass-box p-4 mt-4 text-white" aria-labelledby="questions-heading">
+          <div class="d-flex align-items-center justify-content-between gap-3">
+            <h2 id="questions-heading" class="h4 mb-0">Questions</h2>
+            <button id="questions-refresh" class="btn glass-box text-white px-3" type="button">Refresh</button>
+          </div>
+          <p id="questions-status" class="mt-3 mb-0" role="status" aria-live="polite"></p>
+          <ul id="question-list" class="list-unstyled mb-0" aria-label="Submitted questions"></ul>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
