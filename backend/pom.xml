@@ -78,10 +78,13 @@
 				<directory>../frontend</directory>
 				<targetPath>static</targetPath>
 				<includes>
+					<include>create-event.html</include>
+					<include>create-event.js</include>
+					<include>event.html</include>
+					<include>event.js</include>
 					<include>question.html</include>
 					<include>question.js</include>
 					<include>question-list.js</include>
-					<include>blue1.png</include>
 				</includes>
 			</resource>
 		</resources>

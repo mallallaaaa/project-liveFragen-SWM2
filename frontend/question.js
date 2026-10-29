@@ -2,6 +2,18 @@ const form = document.getElementById("question-form");
 const input = document.getElementById("question-input");
 const submitButton = document.getElementById("question-submit");
 const status = document.getElementById("question-status");
+const questionEventIds = new URLSearchParams(window.location.search).getAll("eventId");
+const submissionEventId = questionEventIds[0];
+const validQuestionEvent = questionEventIds.length === 1 && /^[1-9]\d*$/.test(submissionEventId)
+  && Number.isSafeInteger(Number(submissionEventId));
+
+if (validQuestionEvent) {
+  document.getElementById("question-event-heading").textContent = `Questions for event #${submissionEventId}`;
+} else {
+  input.disabled = true;
+  submitButton.disabled = true;
+  showStatus("Please open the question page using a valid event link from the presenter.");
+}
 
 function showStatus(message) {
   status.textContent = message;
@@ -29,12 +41,12 @@ form.addEventListener("submit", async (event) => {
     const response = await fetch("/api/questions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, eventId: Number(submissionEventId) }),
     });
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      showStatus(error.message || "Your question could not be submitted. Please try again.");
+      showStatus(error?.message || "Your question could not be submitted. Please try again.");
       return;
     }
 

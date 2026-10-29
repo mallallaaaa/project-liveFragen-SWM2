@@ -4,7 +4,7 @@ const { readFileSync } = require("node:fs");
 const vm = require("node:vm");
 const script = readFileSync(`${__dirname}/question.js`, "utf8");
 
-function setup(value, fetch) {
+function setup(value, fetch, search = "?eventId=42") {
   let onSubmit;
   const events = [];
   const elements = {
@@ -18,9 +18,11 @@ function setup(value, fetch) {
     },
     "question-submit": { disabled: false },
     "question-status": { textContent: "", hidden: true },
+    "question-event-heading": {},
   };
   vm.runInNewContext(script, {
-    document: { getElementById: (id) => elements[id] }, fetch, Event,
+    document: { getElementById: (id) => elements[id] }, fetch, Event, URLSearchParams,
+    window: { location: { search } },
   });
   return {
     input: elements["question-input"], button: elements["question-submit"],
@@ -45,7 +47,7 @@ test("posts trimmed JSON, confirms success and clears the field", async () => {
     assert.equal(url, "/api/questions");
     assert.equal(options.method, "POST");
     assert.equal(options.headers["Content-Type"], "application/json");
-    assert.deepEqual(JSON.parse(options.body), { text: "My question?" });
+    assert.deepEqual(JSON.parse(options.body), { text: "My question?", eventId: 42 });
     return { ok: true };
   });
   await ui.submit();
@@ -88,3 +90,13 @@ test("prevents duplicate submissions while the request is pending", async () => 
   await pending;
   assert.equal(ui.button.disabled, false);
 });
+
+for (const search of ["", "?eventId=0", "?eventId=abc", "?eventId=1&eventId=2"]) {
+  test(`prevents submitting without an unambiguous event: ${search}`, async () => {
+    const ui = setup("Question", () => assert.fail("Invalid event submitted"), search);
+    await ui.submit();
+    assert.equal(ui.input.disabled, true);
+    assert.equal(ui.button.disabled, true);
+    assert.match(ui.status.textContent, /valid event link/);
+  });
+}

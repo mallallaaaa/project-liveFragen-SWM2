@@ -6,6 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,22 @@ class QuestionSubmissionTests {
     @Autowired
     private QuestionRepository repository;
 
+    @Autowired
+    private EventRepository events;
+
+    private Long eventId;
+
+    @BeforeEach
+    void createEvent() {
+        eventId = events.save(new Event("Submission test event")).getId();
+    }
+
     private final HttpClient client = HttpClient.newHttpClient();
 
     private HttpResponse<String> post(String body) throws Exception {
+        if (body.startsWith("{") && body.endsWith("}")) {
+            body = "{\"eventId\":" + eventId + (body.equals("{}") ? "}" : "," + body.substring(1));
+        }
         return client.send(HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/api/questions"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString());
@@ -78,7 +92,7 @@ class QuestionSubmissionTests {
 
     @Test
     void servesFrontendAndAssetsFromTheApiOrigin() throws Exception {
-        for (String path : new String[]{"question.html", "question.js", "question-list.js", "blue1.png"}) {
+        for (String path : new String[]{"question.html", "question.js", "question-list.js"}) {
             var response = client.send(HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/" + path))
                     .GET().build(), HttpResponse.BodyHandlers.ofByteArray());
             assertEquals(200, response.statusCode(), path);

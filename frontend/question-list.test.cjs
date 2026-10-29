@@ -4,7 +4,7 @@ const { readFileSync } = require("node:fs");
 const vm = require("node:vm");
 const source = readFileSync(`${__dirname}/question-list.js`, "utf8");
 
-function setup(fetch) {
+function setup(fetch, search = "?eventId=42") {
   const handlers = {};
   const list = {
     children: [], setAttribute() {},
@@ -17,6 +17,7 @@ function setup(fetch) {
     "questions-refresh": button, "question-form": form };
   vm.runInNewContext(source, {
     document: { getElementById: (id) => elements[id], createElement: () => ({}) }, fetch,
+    URLSearchParams, window: { location: { search } },
   });
   return { list, status, button, handlers };
 }
@@ -27,7 +28,7 @@ const response = (questions) => ({ ok: true, json: async () => questions });
 test("loads questions initially and renders untrusted text as plain text", async () => {
   const text = '<img src=x onerror="alert(1)">';
   const ui = setup(async (url, options) => {
-    assert.equal(url, "/api/questions");
+    assert.equal(url, "/api/questions?eventId=42");
     assert.equal(options.cache, "no-store");
     return response([{ id: 1, text }]);
   });
@@ -93,4 +94,18 @@ test("an older request cannot overwrite a newer list", async () => {
   resolveOld(response([{ text: "Old" }]));
   await settle();
   assert.equal(ui.list.children[0].textContent, "Latest");
+});
+
+test("does not request a global list when the event is missing", async () => {
+  const ui = setup(() => assert.fail("Global list requested"), "");
+  await settle();
+  assert.match(ui.status.textContent, /valid event link/);
+  assert.equal(ui.button.disabled, true);
+});
+
+test("unknown event displays an event error and clears its questions", async () => {
+  const ui = setup(async () => ({ ok: false, status: 404 }));
+  await settle();
+  assert.match(ui.status.textContent, /event could not be found/);
+  assert.equal(ui.list.children.length, 0);
 });
