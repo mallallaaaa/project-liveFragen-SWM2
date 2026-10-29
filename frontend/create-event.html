@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Create an event · OCCOR</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <style>
+      body { background: url("blue1.png") center / cover no-repeat fixed; }
+      .glass-box {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 32px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      #event-title { color: #f8fbff; caret-color: #ffffff; }
+      #event-title:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.12);
+      }
+      #event-title::placeholder { color: #596579; opacity: 1; }
+      #event-title:focus::placeholder { color: transparent; }
+      .navbar-brand { color: #0d6efd; }
+      .navbar-brand:hover, .navbar-brand:focus { color: #0a58ca; }
+      #event-status { overflow-wrap: anywhere; white-space: pre-wrap; }
+    </style>
+    <script src="create-event.js" defer></script>
+  </head>
+  <body class="min-vh-100 d-flex flex-column">
+    <header class="position-absolute top-0 start-0 w-100">
+      <nav class="navbar navbar-expand border-bottom" style="background-color: #eef6ff;">
+        <div class="container">
+          <a class="navbar-brand fw-bold" href="create-event.html">OCCOR</a>
+          <div class="ms-auto d-flex align-items-center gap-3">
+            <a class="link-primary text-decoration-none" href="#sign-in">Sign in</a>
+            <a class="btn btn-primary rounded-pill px-3" href="#sign-up">Sign up</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="min-vh-100 d-flex align-items-center justify-content-center" style="padding: 6rem 1rem 3rem;">
+      <section class="w-100 text-white" style="max-width: 760px;" aria-labelledby="create-event-heading">
+        <h1 id="create-event-heading" class="h2 text-center mb-4">Create an event</h1>
+        <form id="event-form" novalidate>
+          <label for="event-title" class="form-label px-3">Event title</label>
+          <input id="event-title" name="title" type="text" maxlength="200" required
+            class="form-control form-control-lg glass-box px-4"
+            placeholder="For example: Software Engineering lecture"
+            aria-describedby="event-title-help event-status" style="height: 4.5rem;" />
+          <p id="event-title-help" class="mt-2 px-3">Choose a title of up to 200 characters.</p>
+          <div class="text-center mt-3">
+            <button id="event-submit" class="btn glass-box text-white px-4" type="submit">Create event</button>
+          </div>
+          <p id="event-status" class="glass-box p-3 mt-4 text-center" role="status" aria-live="polite" hidden></p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
