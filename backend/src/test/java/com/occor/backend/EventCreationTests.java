@@ -96,7 +96,7 @@ class EventCreationTests {
 
     @Test
     void servesEventPageAndAssetsFromTheApiOrigin() throws Exception {
-        for (String path : new String[]{"create-event.html", "create-event.js", "blue1.png"}) {
+        for (String path : new String[]{"create-event.html", "create-event.js"}) {
             var response = client.send(HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/" + path))
                     .GET().build(), HttpResponse.BodyHandlers.ofByteArray());
             assertEquals(200, response.statusCode(), path);

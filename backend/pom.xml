@@ -84,7 +84,6 @@
 					<include>event.js</include>
 					<include>question.html</include>
 					<include>question.js</include>
-					<include>blue1.png</include>
 				</includes>
 			</resource>
 		</resources>

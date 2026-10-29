@@ -78,7 +78,7 @@ class QuestionSubmissionTests {
 
     @Test
     void servesFrontendAndAssetsFromTheApiOrigin() throws Exception {
-        for (String path : new String[]{"question.html", "question.js", "blue1.png"}) {
+        for (String path : new String[]{"question.html", "question.js"}) {
             var response = client.send(HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/" + path))
                     .GET().build(), HttpResponse.BodyHandlers.ofByteArray());
             assertEquals(200, response.statusCode(), path);
